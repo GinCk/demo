@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>苹果官网</title>
+</head>
+<style>
+    form {
+        background-image: url("__STATIC__/img/x.png");
+        text-align:center;
+        height: 880px;
+        background-repeat: no-repeat;
+        /*border:2px solid black;*/
+        /*margin-right:600px;*/
+        /*margin-left:600px;*/
+    }
+</style>
+<body>
+<form>
+    <h2>欢迎登陆apple官网</h2>
+    用户名：<input type="text" name="name" placeholder="请输入用户名" id="name">
+    <br><br>
+    密 &nbsp 码：<input type="password" name="password" placeholder="请输入密码" id="password">
+    <br><br>
+    <input type="button" name="submit" value="登录" onclick="Commit()" >
+    <input type="button" onclick="window.location.href='register'" value="注册">
+</form>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    function Commit() {
+
+
+        let param = {
+            name:$('input[name="name"]').val(),
+            password:$('input[name="password"]').val(),
+        };
+        console.log(param.name)
+        $.ajax({
+            type:"post",
+            url:"log",
+            data:param,
+            success: function (loge) {
+                if (loge.code === 1){
+                    alert('success');
+                    window.open("http://apple.com.cn");
+                }else{
+                    alert(loge.message);
+                }
+                error: function error(error) {
+                    console.error(error);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

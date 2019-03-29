@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网页版扫雷</title>
+    <style>
+        .box{
+            position:relative;
+        }
+        .father{
+            position: relative;
+            display: inline-block;
+            border: 2px solid black;
+        }
+        .box div{
+            width:20px;
+            height:20px;
+            background-color: #ccc;
+            border:2px solid #666;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            position:absolute;
+            text-align: center;
+        }
+        .shadow{
+            position:absolute;
+            top:0;
+            left:0;
+            background-color: rgba(0,0,0,.5);
+            display: none;
+            text-align: center;
+        }
+        .btn{
+            margin-top:100px;
+            width:80px;
+            height:30px;
+        }
+        .win{
+            position:absolute;
+            top:0;
+            left:0;
+            background-color: rgba(0,0,0,.5);
+            display: none;
+            text-align: center;
+            color:#fff;
+        }
+        .menu{
+            width: 240px;
+            height: 60px;
+            line-height: 30px;
+            background-color:lightgrey;
+            border-bottom:2px solid black;
+            position: relative;
+        }
+        .menu span{
+            padding: 0 5px;
+            cursor: pointer;//小手
+        }
+        .menu span:hover{
+            background-color:lightskyblue;
+        }
+        /*二级菜单*/
+        #child-menu,
+        #child-help{
+            display: none;
+            width: 130px;
+        }
+        #child-menu span:hover{
+            background-color:lightskyblue;
+        }
+        #child-help span:hover{
+            background-color:lightskyblue;
+        }
+        #child-menu span,
+        #child-help span{
+            width: 80px;
+            float: left;
+            background-color: white;
+        }
+        .menu img{
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+        }
+        .clear_fix:after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .boxEject{
+            width: 400px;
+            height: 300px;
+            background-color: gray;
+            border: 2px solid dimgray;
+            display: none;
+            margin: auto;
+            position: relative;
+        }
+        .boxEject span{
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .boxAbout{
+            width: 400px;
+            height: 300px;
+            background-color: gray;
+            border: 2px solid dimgray;
+            display: none;
+            margin: auto;
+            position: relative;
+        }
+        .boxAbout span{
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .boxHero{
+            width: 400px;
+            height: 300px;
+            background-color: gray;
+            border: 2px solid dimgray;
+            display: none;
+            margin: auto;
+            position: relative;
+        }
+        .boxHero span{
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .warp{
+            position: relative;
+        }
+        .mineNum{
+            display: inline-block;
+            width: 40px;
+            height: 23px;
+            border: black 1px solid;
+            position: absolute;
+            bottom: 2px;
+            left: 50px;
+        }
+        .timeNum{
+            display: inline-block;
+            width: 40px;
+            height: 23px;
+            border: black 1px solid;
+            position: absolute;
+            bottom: 2px;
+            right: 5px;
+        }
+        .timeName{
+            position: absolute;
+            bottom: 0;
+            right: 43px;
+        }
+        .timeNum span{
+           position: absolute;
+            left: 18%;
+        }
+
+        .eject{
+            text-align: center;
+            padding: 3%;
+        }
+        .about{
+            text-align: center;
+            padding: 6%;
+        }
+        .hero{
+            text-align: -moz-left;
+            padding: 10%;
+        }
+
+
+    </style>
+</head>
+<body onclick="timer()">
+<section class="father">
+    <div class="menu">
+        <span class="menuBtn1">游戏</span>
+        <span class="menuBtn2">帮助</span>
+        <img src="__STATIC__/img/smile.png" class="imgBtn">
+        <div id="child-menu" style="z-index: 999;position: relative" class="menu-child clear_fix">
+            <span class="start">开局</span>
+            <span class="simple">初级</span>
+            <span class="normal">中级</span>
+            <span class="hard">高级</span>
+            <span class="custom">自定义</span>
+            <span class="hero">英雄榜</span>
+            <span class="exit">退出</span>
+        </div>
+        <div id="child-help" style="z-index: 9111;position: relative">
+            <span class="help">游戏说明</span>
+            <span class="about">关于扫雷</span>
+        </div>
+        <div class="warp">
+            <span id="num">雷数：</span>
+        <div class="mineNum"></div>
+            <span class="timeName" id="time">时间：</span>
+            <div class="timeNum clear_fix"><span class="zeroTime">0</span></div>
+        </div>
+    </div>
+    <div class="box"></div>
+    <div class="shadow">
+        <input type="button" class = "btn" value="再来一次"/>
+    </div>
+    <div class="win">
+        <p>游戏胜利</p>
+        请留名：
+        <input type="text" name="name" size="10" maxlength="15">
+        <input type="button" name="submit" onclick="inset()" value="上榜"/>
+    </div>
+</section>
+
+<div class="boxEject" style="background-color: lightgray">
+    <h2 style="text-align: center">游戏规则</h2>
+    <span>×</span>
+    <div class="eject">
+        <p>1.玩家可通过菜单栏选择游戏难度，然后点击开始游戏正式开始扫雷游戏；</p>
+        <p>2.游戏中可以通过鼠标左键点开雷区，右键标记红旗；</p>
+        <p>3.可通过点击笑脸按钮重置游戏，当标记完所有地雷时游戏胜利</p>
+    </div>
+</div>
+
+<div class="boxAbout" style="background-color: lightgray">
+    <h2 style="text-align: center">关于游戏</h2>
+    <span>×</span>
+    <div class="about">
+        <p>JS网页版扫雷</p>
+        <p>作者：Gin</p>
+        <p>QQ:820357054</p>
+        <p>版本：1.0</p>
+    </div>
+</div>
+
+<div class="boxHero" style="background-color: lightgray">
+    <h2 style="text-align: center">英雄榜</h2>
+    <span>×</span>
+    <div class="hero">
+        <table class="heroList">
+            <tr>
+                <td>排名</td>
+                <td>昵称</td>
+                <td>战绩</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+
+    // 计算雷点
+    var index = 0,  //初始化非雷方格数
+        a = true,
+        b=true,
+        timers,  //初始化时间
+        intGame = 0;   //初始化游戏，0为结束，1为进行中，2为初始化化完成但未开始
+
+    // 生成页面
+    page(10,10);
+    state();
+    leiClick();
+    leiM();
+    leiOpen();
+    More();
+    rightClick();
+    MoreImg();
+    win();
+    findLei();
+
+    //封装界面初始值
+    function state(){
+        // 设置各个界面宽度高度
+        var dives = document.querySelectorAll('.box div');
+
+        var box = document.querySelector('.box');
+
+        var shadow = document.querySelector('.shadow');
+
+        var win1 = document.querySelector('.win');
+
+        box.style.width = dives.length/10*24 + 'px';
+
+        box.style.height = dives.length/10*24 + 'px';
+
+        shadow.style.width = dives.length/10*24 + 'px';
+
+        shadow.style.height = dives.length/10*24 + 'px';
+        win1.style.width = dives.length/10*24 + 'px';
+
+        win1.style.height = dives.length/10*24 + 'px';
+    }
+
+    // 封装生成页面函数
+    function page(row,con){  //生成游戏方格行列
+
+        var box = document.querySelector('.box');
+
+        var html = '';
+
+        for(var i =0;i<row;i++){
+
+            for(var j =0;j<con;j++){
+
+                html += '<div style="top:'+i*24+'px;left:'+j*24+'px;"></div>';
+
+            }
+        }
+        box.innerHTML = html;
+    }
+
+    //计时器计时开启
+    function timer(){
+        if(a&&b){
+            a=false;
+        timers = setInterval(function () {
+         $('.zeroTime').text(parseInt( $('.zeroTime').text())+1);
+       },1000)
+        }
+        b=true;
+    }
+
+//  计时器关闭
+    function  closeTimer() {
+        $('.zeroTime').text(0);
+        clearInterval(timers);
+        a=true;
+        b=false;
+    }
+
+    // 给雷点添加点击事件
+    function leiClick(){
+        // 设置雷点
+        var dives = document.querySelectorAll('.box div');
+        var num = 10;
+        var arr = [];
+        for(var i =0;i<num;i++){
+            var n =Math.floor(Math.random()*dives.length);
+            var onOff = false;
+            for(var j =0;j<arr.length;j++){
+                if(n==arr[j]){
+                    onOff = true;
+                    break;
+                }
+            }
+            if(!onOff){
+                arr.push(n);
+            }else{
+                i--;
+            }
+            intGame = 1;
+            var now = new Date();
+
+
+
+        }
+        // 布置雷点
+        for(var i =0;i<arr.length;i++){
+            dives[arr[i]].className = 'lei';
+        }
+        for(var i =0;i<arr.length;i++){
+            dives[arr[i]].onclick = function(){
+                if (this.onOff) return;
+                var lei = document.querySelectorAll('.lei');
+                var shadow = document.querySelector('.shadow');
+                shadow.style.display = 'block';
+                fn(0);
+                //结束后显示正确地雷位置
+                function fn(num){
+                    setTimeout(function(){
+                        lei[num].style.backgroundImage = "url('__STATIC__/img/Mine_Boom.png')";
+                        lei[num].style.backgroundSize = "cover";
+                        clearInterval(timers);
+                        if(num+1<lei.length){
+                            fn(num+1);
+                        }
+                    },200)
+                }
+            }
+        }
+
+    }
+
+    // 计算九宫格雷点个数
+    function leiM(){
+        var dives = document.querySelectorAll('.box div');
+        for(var i =0;i<dives.length;i++){
+            if(dives[i].className=='lei') continue;
+            var num = 0;
+            // 上
+
+            if(dives[i-10]&&dives[i-10].className=='lei'){
+                num++;
+            }
+            //下
+
+            if(dives[i+10]&&dives[i+10].className=='lei'){
+                num++;
+            }
+
+            if(i%10!=0){
+                // 左
+                if(dives[i-1]&&dives[i-1].className=='lei'){
+                    num++;
+                }
+                //左上
+                if(dives[i-11]&&dives[i-11].className=='lei'){
+                    num++;
+                }
+                //左下
+                if(dives[i+9]&&dives[i+9].className=='lei'){
+                    num++;
+                }
+            }
+
+            if(i%10!=9){
+                // 右
+                if(dives[i+1]&&dives[i+1].className=='lei'){
+                    num++;
+                }
+                // 右上
+                if(dives[i-9]&&dives[i-9].className=='lei'){
+                    num++;
+                }
+                // 右下
+                if(dives[i+11]&&dives[i+11].className=='lei'){
+                    num++;
+                }
+            }
+
+            if(num>0){
+                dives[i].num = num;
+            }
+        }
+    }
+
+    //打开不是地雷的方格
+    function leiOpen(){
+        var dives = document.querySelectorAll('.box div');
+        for(var i =0;i<dives.length;i++){
+            if(dives[i].className!='lei'){
+                dives[i].index = i;
+                dives[i].onclick = function(){
+                    var winGame = document.querySelector('.win')
+                    findLei(dives,this.index);
+                    if(index==90){
+                        winGame.style.display = 'block';
+                        win();
+                    }
+                }
+            }
+        }
+    }
+
+    // 再来一次
+    function More(){
+        var btn = document.querySelector('.btn');
+        btn.onclick = function(){
+            index = 0;
+            var shadow = document.querySelector('.shadow');
+            shadow.style.display = 'none';
+            // 生成页面
+            page(10,10);
+            state();
+            leiClick();
+            leiM();
+            leiOpen();
+            rightClick();
+            closeTimer();
+        }
+
+    }
+
+    //笑脸按钮
+
+
+    function MoreImg(){
+        var btn= document.querySelector('.imgBtn');
+        var btn1 = document.querySelector(".start");
+        btn.onclick = function(){
+            // 生成页面
+            page(10,10);
+            state();
+            leiClick();
+            leiM();
+            leiOpen();
+            rightClick();
+            closeTimer();
+        }
+        btn1.onclick =function () {
+            page(10,10);
+            state();
+            leiClick();
+            leiM();
+            leiOpen();
+            rightClick();
+            closeTimer();
+            btn1.parentElement.style.display = "none";
+        }
+    }
+
+    //游戏胜利
+    function win(){
+        var btn = document.querySelector('.btn1');
+        btn.onclick = function(){
+            index = 0;
+            var win1 = document.querySelector('.win');
+            win1.style.display = 'none';
+            // 生成页面
+            page(10,10);
+            state();
+            leiClick();
+            leiM();
+            leiOpen();
+            rightClick();
+
+        };
+        clearInterval(timers);
+    }
+
+    //留名上榜
+    function inset() {
+        let param = {
+            name:$('input[name="name"]').val(),
+        };
+        $.ajax({
+            type: "post",
+            url: "/boom/reg",
+            data: param,
+            success: function(resp){
+                if (resp.code === 1){
+                    alert('英雄留名成功');
+                    MoreImg();
+                }else{
+                    alert(resp.message);
+                }
+            },
+            error: function () {
+                console.error(error);
+            }
+        });
+        
+    }
+    
+    //英雄榜显示
+    function heroList() {
+
+
+
+    }
+
+    //根据点击显示非雷区
+    function findLei(dives,i){
+        if(dives[i].onOff) return;
+        dives[i].onOff = true;
+        if(dives[i].onOff) index++;
+        console.log(index);
+        dives[i].style.border = '1px solid #ccc';
+
+        dives[i].innerHTML = dives[i].num||'';
+
+        dives[i].style.backgroundColor = '#f1f1f1';
+
+        dives[i].style.width = '22px';
+
+        dives[i].style.height = '22px';
+
+        if(!dives[i].num){
+            //上
+            if(dives[i-10]&&dives[i-10].className!='lei'){
+
+                findLei(dives,i-10);
+            }
+            //下
+            if(dives[i+10]&&dives[i+10].className!='lei'){
+
+                findLei(dives,i+10);
+
+            }
+            if(i%10!=0){
+                // 左
+                if(dives[i-1]&&dives[i-1].className!='lei'){
+
+                    findLei(dives,i-1);
+                }
+                //左上
+                if(dives[i-11]&&dives[i-11].className!='lei'){
+
+                    findLei(dives,i-11);
+
+                }
+                //左下
+                if(dives[i+9]&&dives[i+9].className!='lei'){
+
+                    findLei(dives,i+9);
+
+                }
+            }
+            if(i%10!=9){
+                // 右
+                if(dives[i+1]&&dives[i+1].className!='lei'){
+
+                    findLei(dives,i+1);
+
+                }
+                // 右上
+                if(dives[i-9]&&dives[i-9].className!='lei'){
+
+                    findLei(dives,i-9);
+
+                }
+                // 右下
+                if(dives[i+11]&&dives[i+11].className!='lei'){
+
+                    findLei(dives,i+11);
+                }
+            }
+        }
+    }
+
+    //右键插旗
+    function rightClick(){
+        var dives = document.querySelectorAll('div');
+        for(var i =0;i<dives.length;i++){
+            dives[i].oncontextmenu=function(ev){
+                var ev = ev||event;
+                ev.preventDefault();    // 取消右键浏览器行为
+                if(!this.onOff){
+                    this.style.backgroundImage ="url('__STATIC__/img/mark.png')";
+                    this.style.backgroundSize = "cover";
+                    this.onOff = true;
+                }else{
+                    this.style.backgroundImage = '';
+                    this.onOff = false;
+                }
+            }
+        }
+    }
+</script>
+<script>
+
+    //按钮响应函数
+    $(".menuBtn1").click(function () {
+        if($("#child-help").css("display","none"))
+        $("#child-menu").toggle();
+    })
+
+    $(".menuBtn2").click(function () {
+            if($("#child-menu").css("display","none")){
+                $("#child-help").toggle();
+            }
+    })
+
+    $(".imgBtn").click(function () {
+        MoreImg();
+    })
+    //游戏说明
+    $(".help").click(function () {
+        $(".boxEject").toggle();
+        $(this).parent().hide();
+    })
+
+    $(".boxEject span").click(function () {
+        $(".boxEject").hide();
+    })
+    //关于扫雷
+    $(".about").click(function () {
+        $(".boxAbout").toggle();
+        $(this).parent().hide();
+    })
+
+    $(".boxAbout span").click(function () {
+        $(".boxAbout").hide();
+    })
+    //英雄榜
+    $(".hero").click(function () {
+        $(".boxHero").toggle();
+        $(this).parent().hide();
+    })
+
+    $(".boxHero span").click(function () {
+        $(".boxHero").hide();
+    })
+</script>
+</html>

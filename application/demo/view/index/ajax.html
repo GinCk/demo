@@ -1,0 +1,477 @@
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<meta name="viewport"-->
+          <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <!--<title>扫雷</title>-->
+    <!--<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div class="main" id="main">-->
+    <!--<div class="shezhi">-->
+        <!--<div class="start">-->
+            <!--<div class="shuoming">输入雷数</div>-->
+            <!--<input type="text" id="number"/>-->
+            <!--<input type="button" id="btn" value="开始游戏" onclick="startgame()"/>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="zhedang" id="zhedang" onclick="zhedangtishi()"></div>-->
+    <!--<div class="saolei" id="saolei">-->
+        <!--<div class="leiqu" id="leiqu_{{index}}">-->
+            <!--<div class="zhengmian" id="zhengmian_{{index}}" onmousedown="chaqi(event,{{index}})" onclick="diankai({{index}})"></div>-->
+            <!--<div class="chaqi" id="chaqi_{{index}}" onmousedown="quxiaochaqi(event,{{index}})">-->
+                <!--<div class="sanjiao"></div>-->
+                <!--<div class="shuxian"></div>-->
+                <!--<div class="hengxian"></div>-->
+            <!--</div>-->
+            <!--<div class="lei" id="lei_{{index}}" onclick="cailei({{index}})" onmousedown="chaqi(event,{{index}})">-->
+                <!--<div class="lei_i"></div>-->
+            <!--</div>-->
+            <!--<div class="shuzi" id="shuzi_{{index}}" onmousedown="areadiankai(event,{{index}})"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="zhuangtai" id="zhuangtai">-->
+        <!--<div class="time" id="time">-->
+            <!--<div class="img_zhuangtai" id="img_time"></div>-->
+            <!--<div class="text_zhuangtai" id="text_time">0</div>-->
+        <!--</div>-->
+        <!--<div class="shuliang" id="shuliang">-->
+            <!--<div class="img_zhuangtai" id="img_shuliang"></div>-->
+            <!--<div class="text_zhuangtai" id="text_shuliang">0</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div id="shuoming">-->
+    <!--<h2>游戏说明</h2>-->
+    <!--<ul>-->
+        <!--<li>请不要禁止弹出窗口</li>-->
+        <!--<li>在右上角输入框输入雷数，数量为1-150</li>-->
+        <!--<li>点击开始游戏，即可开始扫雷</li>-->
+        <!--<li>左键翻开格子，右键插上红旗</li>-->
+        <!--<li>左右键同时点击数字，可翻开数字周围格子</li>-->
+    <!--</ul>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<meta name="viewport"-->
+          <!--content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <!--<title>QQ空间</title>-->
+<!--</head>-->
+<!--<style type="text/css">-->
+    <!--.demo{-->
+        <!--width:500px;-->
+        <!--margin:  0 auto;-->
+    <!--}-->
+    <!--h3{-->
+        <!--font-size:18px-->
+    <!--}-->
+    <!--#comments{-->
+        <!--margin:10px auto-->
+    <!--}-->
+    <!--#post{-->
+        <!--margin-top:10px-->
+    <!--}-->
+    <!--#comments p,#post p{-->
+        <!--line-height:30px-->
+    <!--}-->
+    <!--#comments p span{-->
+        <!--margin:4px; color:#999-->
+    <!--}-->
+    <!--#message{-->
+        <!--position:relative;-->
+        <!--display:none;-->
+        <!--width:100px;-->
+        <!--padding:4px;-->
+        <!--margin-top:-100px;-->
+        <!--margin-left:30px;-->
+        <!--background: #ff0000;-->
+        <!--color: #c286ff;-->
+        <!--z-index:1001-->
+    <!--}-->
+<!--</style>-->
+<!--<script src="//cdn.bootcss.com/jquery/1.4.2/jquery.min.js"></script>-->
+
+<!--<script type="text/javascript">-->
+    <!--$(function(){-->
+        <!--var comments = $("#comments");-->
+        <!--$.getJSON("server.php",function(json){-->
+            <!--$.each(json,function(index,array){-->
+                <!--var txt = "<p><strong>"+array["user"]+"</strong>："+array["comment"]+"<span>"+array["addtime"]+"</span></p>";-->
+                <!--comments.append(txt);-->
+            <!--});-->
+        <!--});-->
+        <!--$("#add").click(function(){-->
+            <!--var user = $("#user").val();-->
+            <!--var txt = $("#txt").val();-->
+            <!--$.ajax({-->
+                <!--type: "POST",-->
+                <!--url: "Ajax.php",-->
+                <!--data: "user="+user+"&txt="+txt,-->
+                <!--success: function(msg){-->
+                    <!--if(msg==1){-->
+                        <!--var str = "<p><strong>"+user+"</strong>："+txt+"<span>刚刚</span></p>";-->
+                        <!--comments.append(str);-->
+                        <!--$("#message").show().html("发表成功！").fadeOut(1000);-->
+                        <!--$("#txt").attr("value","");-->
+                    <!--}else{-->
+                        <!--$("#message").show().html(msg).fadeOut(1000);-->
+                    <!--}-->
+                <!--}-->
+            <!--});-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->
+
+<!--<body>-->
+<!--<div class="demo">-->
+    <!--<div id="comments">-->
+        <!--<h3 style="color: slateblue">评论列表</h3>-->
+    <!--</div>-->
+    <!--<div id="post">-->
+        <!--<h3 style="color: slateblue">发表评论</h3>-->
+        <!--<p>昵称：</p>-->
+        <!--<p><input type="text" class="input" id="user" /></p>-->
+        <!--<p>评论内容：</p>-->
+        <!--<p><textarea class="input" id="txt" style="width:100%; height:80px"></textarea></p>-->
+        <!--<p><input type="submit" value="发表" id="add" ></p>-->
+        <!--<div id="message"></div>-->
+
+    <!--</div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>拼图游戏</title>
+</head>
+
+<style>
+    body,html{ padding: 0px; margin: 0px; background:#eee; }
+    #gameDiv{ width:460px; height: 460px; margin: 20px auto; background: #F9F9F9; padding: 1px 1px;position:relative; }
+    #maskBox{ opacity: 0.5; display: block;}
+</style>
+
+<body>
+
+<div style="width:460px;margin:20px auto;text-align:center;line-height:30px;">游戏说明：点击选中一个区块，在点击到其它区块，图片互相替换过程。</div>
+
+<div id="gameDiv"></div>
+
+<script>
+    window.onload=function(){
+        //生成函数
+        gameInfo.init();
+    }
+
+</script>
+<script>
+    /**
+     * Created by Aloys on 2019/1/22.
+     */
+    (function($g){
+        //游戏配置
+        setting={
+            gameConfig:{
+                url:"__STATIC__/img/5.png",
+                id:"gameDiv",
+                //生成规格横4 纵4
+                size:"4*4",
+                //每个元素的间隔
+                margin:1,
+                //拖动时候块透明度
+                opacity:0.8
+            },
+            setElement:{
+                type:"div",
+                id: "",
+                float: "",
+                display: "",
+                margin: "",
+                background: "",
+                width: "",
+                height: "",
+                left:"",
+                top:"",
+                position:"",//absolute
+                opacity:0.4,
+                animate:0.8
+            }
+        };
+        //元素生成参数
+        var _sg= setting.gameConfig;
+        var _st= setting.setElement;
+        var gameInfo=function(){};
+        gameInfo.prototype= {
+            init:function(){
+                this.creatObj();
+                this.eventHand();
+            },
+            sortObj:{
+                rightlist:[], //正确的排序
+                romdlist:[]   //打乱后的排序
+            },
+            creatObj: function () {
+                _sg.boxObj = document.getElementById(_sg.id)||"";
+                //尺寸自动获取
+                var _size =  _sg.size.split('*') || [0, 0];
+                //计算单个div的高宽
+                var w = Math.floor(_sg.boxObj.offsetWidth / _size[0]);
+                var h = Math.floor(_sg.boxObj.offsetHeight / _size[1]);
+                //图片生成div
+                var _size = _sg.size.split('*') || [0, 0];
+                var wt=_size[0],hg=_size[1];
+                //创建一个素组并排序打散
+                var sortList=[];
+                for(var a=0;a<wt*hg;a++){
+                    sortList.push(a);
+                }
+                sortList.sort(randomsort);
+                this.sortObj.rightlist=sortList;
+                //---------
+                var _i = 0,sid=0;
+                for (; _i < wt; _i++) {
+                    var _s = 0;
+                    for (; _s < hg; _s++)
+                    {
+                        //赋值随机打散后的id
+                        _st.id =sortList[sid++];
+                        _st.display = "block";
+                        _st.float = "left";
+                        //_st.top=w*_i+"px";
+                        //_st.left=h*_s+"px";
+                        _st.margin = _sg.margin + "px";
+                        _st.background = "url('" + _sg.url + "') " + (-w * _s) + "px " + (-h * _i) + "px";
+                        _st.width = w-_sg.margin*(wt/2) + "px";
+                        _st.height = h-_sg.margin*(hg/2) + "px";
+                        this.sortObj.romdlist.push(this.addElement());
+                        // console.log( (_w*_i)+"px "+(_h*_s)+"px ");
+                    }
+                }
+
+                this.boxSort();
+            },
+            boxSort:function(){
+                var _arrySort=this.sortObj.romdlist;
+                var _tmp=[],_n= 0;
+                eachBox(_arrySort,function(d){
+                    _tmp.push(parseInt(_arrySort[d].id));
+                });
+                //排序新数组
+                _tmp.sort(function(a,b){
+                    return a>b?1:-1;
+                });
+                //排序后的带dom的素组
+                for(;_n<_tmp.length;_n++){
+                    var _s=0;
+                    for(;_s<_arrySort.length;_s++)
+                    {
+                        if(_arrySort[_s].id==_tmp[_n]){
+                            _sg.boxObj.appendChild(_arrySort[_s]);
+                        }
+                    }
+                }
+                return _tmp;
+            },
+            //添加元素
+            addElement:function(){
+                var _obj = document.createElement(_st.type);
+                _obj.id =_st.id;
+                _obj.style.display = _st.display;
+
+                _obj.style.float = _st.float;
+                _obj.style.margin = _st.margin;
+                _obj.style.background =_st.background;
+                _obj.style.width =_st.width;
+                _obj.style.position=_st.position;
+                _obj.style.top=_st.top;
+                _obj.style.left=_st.left;
+                _obj.style.height =_st.height;
+                return _obj;
+            },
+            mouseEvent:{
+                mousedown:function(ev) {
+                    ev = ev || ev.event;
+                    ev.preventDefault();
+                    //元素类型div
+                    _st.type="span";
+                    _st.id = "maskBox";
+                    _st.width = this.offsetWidth + "px";
+                    _st.height = this.offsetHeight + "px";
+                    _st.position = "absolute";
+                    _st.background = "";
+                    //_st.opacity=_sg.opacity;
+                    _st.left = this.offsetLeft + "px";
+                    _st.top = this.offsetTop + "px";
+                },
+                mouseup:function(ev){
+                    ev=ev|| ev.event;
+                    //var _e=t.setElement;
+                    ev.preventDefault();
+                    var obj=document.getElementById(this.id);
+                    if(obj){
+                        _sg.boxObj.removeChild(obj);
+                    }
+                },
+                mousemove:function(ev){
+                    ev=ev|| ev.event;
+                    this.style.left=getX_Y.call(this,"x",ev)+"px";
+                    this.style.top=getX_Y.call(this,"y",ev)+"px";
+                }
+
+            },
+            //正确检查 对比两个数组
+            gameCheck:function(){
+                var s= 0,bols=true;
+                var _arry=this.sortObj.rightlist;
+                var _arryRom=this.sortObj.romdlist;
+                console.log(_arry);
+                console.log(_arryRom);
+                for(;s<_arry.length;s++){
+                    if(_arry[s]!=_arryRom[s].id){
+                        bols=false;
+                        break;
+                    }
+                }
+                return bols;
+            },
+            eventHand: function () {
+                var _obj= _sg.boxObj.getElementsByTagName("div");
+                var i= 0,olen=_obj.length;
+                var that=this;
+                var m=that.mouseEvent;
+                var box_index=0;
+                for(;i<olen;){
+                    (function(n){
+                        //按下鼠标
+                        _obj[n].addEventListener("mousedown",function(e){
+                            var _this=this;
+                            m.mousedown.call(_this,e);
+                            _st.background=_this.style.background;
+                            _this.style.background="#FFF";
+                            //生成可移动的div
+                            var _newObj=that.addElement();
+                            _sg.boxObj.appendChild(_newObj);
+                            _newObj.style.opacity=_sg.opacity;
+                            //移动位置
+                            _newObj.onmousemove=function(e){
+                                m.mousemove.call(_newObj,e);
+                                // console.log("____"+this.offsetLeft);
+                                var _i= 0;
+
+                                for(;_i<olen;_i++){
+                                    var _w=parseInt(_obj[_i].style.width)/1.5;
+                                    var _h=parseInt(_obj[_i].style.height)/1.5;
+                                    var _left=_obj[_i].offsetLeft;
+                                    var _top=_obj[_i].offsetTop;
+                                    var _boxX=parseInt(this.style.left);
+                                    var _boxY=parseInt(this.style.top);
+                                    //还原样式
+                                    eachBox(_obj,function(d){
+                                        _obj[d].style.opacity=1.0;
+                                    });
+                                    //计算拖动到的位置
+                                    if(_left+_w>_boxX||_left>_boxX+_w)
+                                    {
+                                        if(_top+_h>_boxY||_top>_boxY+_h)
+                                        {
+                                            box_index=_i;
+                                            _obj[_i].style.opacity=_st.opacity;
+                                            break;
+                                        }
+
+                                    }
+                                }
+                            };
+                            //鼠标松开
+                            _newObj.addEventListener("mouseup",function(e){
+                                //删除移动事件
+                                _newObj.onmousemove=function(e){};
+                                //获取当前停留元素的坐标
+                                var tagObj={
+                                    id1:_obj[box_index].id,
+                                    id2: _this.id,
+                                    bg1:_obj[box_index].style.background,
+                                    bg2:this.style.background
+                                };
+                                //交换位置
+                                _this.id=tagObj.id1;
+                                _this.style.background=tagObj.bg1;
+                                _obj[box_index].id=tagObj.id2;
+                                _obj[box_index].style.background=tagObj.bg2;
+                                //获取拖动后的排序
+                                that.sortObj.romdlist=_obj;
+                                //还原样式
+                                eachBox(_obj,function(d){
+                                    _obj[d].style.opacity=1.0;
+                                });
+                                //删除浮动div
+                                m.mouseup.call(_newObj,e);
+                                //计算是否完成拼图
+                                if(that.gameCheck()){
+                                    alert("成功~");
+                                }
+                            },false);
+
+                        },false);
+
+                    })(i++);
+
+                }
+
+            }
+        }
+        //随机数
+        function randomsort(a, b) {
+            return Math.random()>.5 ? -1 : 1;//用Math.random()函数生成0~1之间的随机数与0.5比较，返回-1或1
+        }
+        function eachBox(obj,fn){
+            var _s=0;
+            for(;_s<obj.length;_s++){
+                fn(_s);
+            }
+        }
+        function getX_Y(s,ev){
+            var _b=(ev.clientX-this.parentNode.offsetLeft)-(this.offsetWidth/2);
+            if(s==="y"){
+                _b=(ev.clientY-this.parentNode.offsetTop)-(this.offsetHeight/2);
+            }
+            return _b;
+        }
+        $g.gameInfo =new gameInfo();
+    })(window)
+</script>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    <p style="color: red;size: 40px">8-10岁儿童专属~</p>
+</div>
+</body>
+</html>
